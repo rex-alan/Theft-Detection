@@ -19,7 +19,7 @@ while True:
     elif k%256 == 32:
         # SPACE pressed
         print('Image' + str(img_counter) + 'saved')
-        file = 'X:/mano/theft detection/Training_images/Edwin.jpg'
+        file = "Your photo directory's location"
         cv2.imwrite(file, frame)
         img_counter += 1
 
