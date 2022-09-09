@@ -66,7 +66,6 @@ try:
     cv2.imshow('Orginal',img)
     cv2.imshow('Scale image',res)
     cv2.waitKey(0)
-   
 except IOError:
         print ('Error while reading files !!!')
 
@@ -150,21 +149,40 @@ cv2.destroyAllWindows()
 
 LAB 3 (skew detection and correction using image processing.)
 
-import cv2 import numpy as np img=cv2.imread("skew.png") 
+import cv2 
+import numpy as np 
+img=cv2.imread("skew.png") 
 gray_img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) 
 gray_img=cv2.bitwise_not(gray_img) 
 coordinates=np.column_stack(np.where(gray_img>0)) 
-ang=cv2.minAreaRect(coordinates)[-1] if ang<-45:     ang=-(90+ang) else:     ang=-ang     height,width=img.shape[:2] centre=(width/2,height/2) 
+ang=cv2.minAreaRect(coordinates)[-1] if ang<-45:     ang=-(90+ang) else:     ang=-ang     height,width=img.shape[:2] 
+centre=(width/2,height/2) 
 rotationMatrix=cv2.getRotationMatrix2D(centre,ang,1.0) 
 rotated_img=cv2.warpAffine(img,rotationMatrix, (width,height),flags=cv2.INTER_CUBIC,borderMode=cv2.BORDER_REFLECT) 
-cv2.imshow("Roated Image",rotated_img) cv2.waitKey(0) 
+cv2.imshow("Roated Image",rotated_img) 
+cv2.waitKey(0) 
 
 
 LAB - 4 (IMAGE PROCESSING WITH THRESHLDING)
 
-
-
-
+import cv2
+import numpy as np
+image1 = cv2.imread('lshorse.jpg')
+img = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+ret, thresh1 = cv2.threshold(img, 120, 255, cv2.THRESH_BINARY)
+print(ret, thresh1)
+ret, thresh2 = cv2.threshold(img, 120, 255, cv2.THRESH_BINARY_INV)
+ret, thresh3 = cv2.threshold(img, 120, 255, cv2.THRESH_TRUNC)
+ret, thresh4 = cv2.threshold(img, 120, 255, cv2.THRESH_TOZERO)
+ret, thresh5 = cv2.threshold(img, 120, 255, cv2.THRESH_TOZERO_INV)
+cv2.imshow('Orginal Image', image1)
+cv2.imshow('Binary Threshold', thresh1)
+cv2.imshow('Binary Threshold Inverted', thresh2)
+cv2.imshow('Truncated Threshold', thresh3)
+cv2.imshow('Set to 0', thresh4)
+cv2.imshow('Set to 0 Inverted', thresh5)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 
 LAB - 5 (contour object detection and edge detection.)
