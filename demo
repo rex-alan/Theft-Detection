@@ -1,0 +1,191 @@
+#LAB 1 (basic image operations)
+
+#colors
+import cv2  
+image = cv2.imread('sample.jpeg')
+B, G, R = cv2.split(image)
+# Corresponding channels are seperated
+cv2.imshow("original", image)
+cv2.imshow("blue", B)
+cv2.imshow("Green", G)
+cv2.imshow("red", R)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+#pixels
+import cv2
+from PIL import Image
+input_image = Image.open('sample.jpeg')
+pixel_map = input_image.load()
+width, height = input_image.size
+for i in range(width//2):
+    for j in range(height):
+        r, g, b = input_image.getpixel((i, j))
+        grayscale = (0.299*r + 0.587*g + 0.114*b)
+        pixel_map[i, j] = (int(grayscale), int(grayscale), int(grayscale))
+input_image.save("grayscale", format="png")
+input_image.show()
+
+#filter
+from PIL import Image, ImageFilter
+im1 = Image.open('sample.jpeg')
+im2 = im1.filter(ImageFilter.CONTOUR)
+im2.show()
+
+#blur
+import cv2
+img = cv2.imread('sample.jpeg')
+blurImg = cv2.blur(img,(10,10))
+cv2.imshow('blurred image',blurImg)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+#erosion and dilation
+import cv2
+import numpy as np
+img = cv2.imread('download.png', 0)
+kernel = np.ones((5,5), np.uint8)
+img_erosion = cv2.erode(img, kernel, iterations=1)
+img_dilation = cv2.dilate(img, kernel, iterations=1)
+cv2.imshow('Input', img)
+cv2.imshow('Erosion', img_erosion)
+cv2.imshow('Dilation', img_dilation)
+cv2.waitKey(0)
+
+
+#LAB 2 ( To perform scaling ,rotating and transforming images.)
+#scaling
+import cv2
+import numpy as np
+FILE_NAME = 'images/ring.jpg'
+try:
+    img = cv2.imread(FILE_NAME)
+    (height, width) = img.shape[:2]
+    print(height,width)
+    res = cv2.resize(img, (int(width / 2), int(height / 2)), interpolation = cv2.INTER_CUBIC)
+    cv2.imshow('Orginal',img)
+    cv2.imshow('Scale image',res)
+    cv2.waitKey(0)
+   
+except IOError:
+        print ('Error while reading files !!!')
+
+import cv2
+import numpy as np
+FILE_NAME = 'images/ring.jpg'
+try:
+    img = cv2.imread(FILE_NAME)
+    (height, width) = img.shape[:2]
+    print(height,width)
+    dim=height*2, width *2
+    res = cv2.resize(img,dim)
+    cv2.imshow('Orginal',img)
+    cv2.imshow('Scale image',res)
+    cv2.waitKey(0)
+    #cv2.imwrite('result.jpg', res)
+except IOError:
+        print ('Error while reading files !!!')
+        
+# rotating
+import cv2   
+img = cv2.imread('images/ring.jpg')  
+(h, w) = img.shape[:2]  
+center = (w / 2, h / 2)  
+print(center)
+angle90 = 90  
+angle180 = 180  
+angle270 = 270  
+scale = 1.0   
+M = cv2.getRotationMatrix2D(center, angle90, scale)  
+rotated90 = cv2.warpAffine(img, M, (h, w))  
+  
+# 180 degrees  
+M = cv2.getRotationMatrix2D(center, angle180, scale)  
+rotated180 = cv2.warpAffine(img, M, (w, h))  
+  
+# 270 degrees  
+M = cv2.getRotationMatrix2D(center, angle270, scale)  
+rotated270 = cv2.warpAffine(img, M, (h, w))  
+  
+cv2.imshow('Original Image', img)  
+#cv2.waitKey(0)  # waits until a key is pressed  
+#cv2.destroyAllWindows()  # destroys the window showing image  
+  
+cv2.imshow('Image rotated by 90 degrees', rotated90)  
+#cv2.waitKey(0)  # waits until a key is pressed  
+#cv2.destroyAllWindows()  # destroys the window showing imag  
+  
+cv2.imshow('Image rotated by 180 degrees', rotated180)  
+#cv2.waitKey(0)  # waits until a key is pressed  
+#cv2.destroyAllWindows()  # destroys the window showing image  
+  
+cv2.imshow('Image rotated by 270 degrees', rotated270)  
+cv2.waitKey(0)  # waits until a key is pressed  
+cv2.destroyAllWindows()  # destroys the window showing image
+
+#transformation
+import cv2
+import numpy as np
+  
+image = cv2.imread('images/ring.jpg')
+  
+# Store height and width of the image
+height, width = image.shape[:2]
+  
+quarter_height, quarter_width = height / 4, width / 4
+  
+T = np.float32([[1, 0, quarter_width], [0, 1, quarter_height]])
+print(T)
+  
+# We use warpAffine to transform
+# the image using the matrix, T
+img_translation = cv2.warpAffine(image, T, (width, height))
+  
+cv2.imshow("Originalimage", image)
+cv2.imshow('Translation', img_translation)
+cv2.waitKey()
+  
+cv2.destroyAllWindows()
+
+
+LAB 3 (skew detection and correction using image processing.)
+
+import cv2 import numpy as np img=cv2.imread("skew.png") 
+gray_img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) 
+gray_img=cv2.bitwise_not(gray_img) 
+coordinates=np.column_stack(np.where(gray_img>0)) 
+ang=cv2.minAreaRect(coordinates)[-1] if ang<-45:     ang=-(90+ang) else:     ang=-ang     height,width=img.shape[:2] centre=(width/2,height/2) 
+rotationMatrix=cv2.getRotationMatrix2D(centre,ang,1.0) 
+rotated_img=cv2.warpAffine(img,rotationMatrix, (width,height),flags=cv2.INTER_CUBIC,borderMode=cv2.BORDER_REFLECT) 
+cv2.imshow("Roated Image",rotated_img) cv2.waitKey(0) 
+
+
+LAB - 4 (IMAGE PROCESSING WITH THRESHLDING)
+
+
+
+
+
+
+LAB - 5 (contour object detection and edge detection.)
+
+#Program for Contour Object Detection and Edge Detection
+
+import cv2
+img = cv2.imread('images/ring.jpg')
+edges = cv2.Canny(img,200,300,True)  # detection of the edges
+cv2.imshow("Edge Detected Image", edges) 
+cv2.imshow("Original Image", img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()  
+
+import cv2
+from matplotlib import pyplot as plt
+image = cv2.imread('images/house.jpg')
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+_, binary = cv2.threshold(gray, 225, 255, cv2.THRESH_BINARY_INV)
+contours, hierarchy = cv2.findContours(binary, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+image = cv2.drawContours(image, contours, -1, (255, 0, 0), 4)
+plt.subplot(121),plt.imshow(binary, cmap="gray")
+plt.subplot(122),plt.imshow(image)
+plt.show()
