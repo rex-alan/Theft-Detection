@@ -207,3 +207,26 @@ image = cv2.drawContours(image, contours, -1, (255, 0, 0), 4)
 plt.subplot(121),plt.imshow(binary, cmap="gray")
 plt.subplot(122),plt.imshow(image)
 plt.show()
+
+
+LAB - 6 (GET TEXT FROM IMAGE USING PYTHON)
+
+from PIL import Image, ImageEnhance, ImageFilter
+import pytesseract
+import os
+path = 'images/text.gif'
+img = Image.open(path)
+img = img.convert('RGBA')
+pix = img.load()
+#print(pix[x, y])
+for y in range(img.size[1]):
+    for x in range(img.size[0]):
+        if pix[x, y][0] < 102 or pix[x, y][1] < 102 or pix[x, y][2] < 102:
+            pix[x, y] = (0, 0, 0, 255)
+        else:
+            pix[x, y] = (255, 255, 255, 255)
+img.save('temp.png')
+img.show()
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+text = pytesseract.image_to_string(Image.open('temp.png'))
+print(text)
